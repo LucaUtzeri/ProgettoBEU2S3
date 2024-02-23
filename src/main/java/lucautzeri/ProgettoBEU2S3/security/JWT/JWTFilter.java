@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -43,7 +44,15 @@ public class JWTFilter extends OncePerRequestFilter {
         // 2: Comunicare a Spring Security l'autentificazione
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
     }
+
+    // Rimuovere il filtro a Login e Register
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request){
+        return new AntPathMatcher().match("/auth/**", request.getServletPath());
+        // "Se il path = /auth + /[w/e], non usare il filtro"
+
+    }
+
 }

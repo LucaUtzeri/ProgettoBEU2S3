@@ -9,23 +9,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-        @Autowired
-        private UserService userService;
+    @Autowired
+    private UserService userService;
 
-        @Autowired
-        private JWTTools jwtTools;
+    @Autowired
+    private JWTTools jwtTools;
 
-        // Logica da metter nel service:
-        // Check credenziali
-        // Se OK -> Genera token, ritorna token
-        // Se NO -> Exception Error (401)
+    // Logica da metter nel service:
+    // Check credenziali
+    // Se OK -> Genera token, ritorna token
+    // Se NO -> Exception Error (401)
 
-        public String checkUserThenCreateToken(LoginDTO payload){
-            User user = userService.findByEmail(payload.email());
-            if ( (user.getPassword().equals(payload.password()))){
-                return jwtTools.newToken(user);
-            } else {
-                throw new UnauthorizedException("Unauthorized Access");
-            }
+    public String checkUserThenCreateToken(LoginDTO payload) {
+        User user = userService.findByEmail(payload.email());
+        if ((user.getPassword().equals(payload.password()))) {
+            return jwtTools.newToken(user);
+        } else {
+            throw new UnauthorizedException("Unauthorized Access");
         }
     }
+
+}
