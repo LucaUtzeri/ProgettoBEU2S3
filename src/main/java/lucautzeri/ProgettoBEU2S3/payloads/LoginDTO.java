@@ -1,7 +1,6 @@
 package lucautzeri.ProgettoBEU2S3.payloads;
 
-public record LoginDTO(String username,
-                       String password,
-                       String email) {
+public record LoginDTO(String email,
+                       String password) {
 
 }

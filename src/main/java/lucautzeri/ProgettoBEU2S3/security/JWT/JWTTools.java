@@ -3,6 +3,7 @@ package lucautzeri.ProgettoBEU2S3.security.JWT;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lucautzeri.ProgettoBEU2S3.entities.User;
+import lucautzeri.ProgettoBEU2S3.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,23 @@ public class JWTTools {
     }
 
     // Validazione Token
-    public void checkToken(String token){}
+    public void checkToken(String token){
+        // Questo lancerà eccezioni in base al token se invalido o scaduto.
+        // Fattibile con un Try/Catch
+        try {
+            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parse(token);
+        } catch (Exception error){
+            throw new UnauthorizedException("Invalid token!");
+        }
+    }
+
+    public String getIdFromToken(String token){
+        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+        // Il Subject sara l' UUID dell'utente in questo caso
+
+    }
 }

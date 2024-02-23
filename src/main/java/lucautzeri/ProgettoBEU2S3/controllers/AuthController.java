@@ -1,6 +1,7 @@
 package lucautzeri.ProgettoBEU2S3.controllers;
 
 import lucautzeri.ProgettoBEU2S3.payloads.LoginDTO;
+import lucautzeri.ProgettoBEU2S3.payloads.LoginResponse;
 import lucautzeri.ProgettoBEU2S3.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDTO payload){
-        return authService.checkUserThenCreateToken(payload);
+    public LoginResponse login(@RequestBody LoginDTO payload){
+        return new LoginResponse(authService.checkUserThenCreateToken(payload));
     }
 }
